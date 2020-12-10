@@ -6,16 +6,16 @@ class Input extends Component {
     const { checked, id, name, onChange, type, value, labelText } = this.props;
 
     return (
-      <label htmlFor={id} data-testid={`${id}-label`}>
+      <label htmlFor={ id } data-testid={ `${id}-label` }>
         {labelText}
         <input
-          checked={checked}
-          data-testid={id}
-          id={id}
-          name={name}
-          onChange={onChange}
-          type={type}
-          value={value}
+          checked={ checked }
+          data-testid={ id }
+          id={ id }
+          name={ name }
+          onChange={ onChange }
+          type={ type }
+          value={ value }
         />
       </label>
     );
