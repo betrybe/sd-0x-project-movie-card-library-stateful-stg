@@ -1,50 +1,45 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Input from './Input';
+
 import SelectInput from './SelectInput';
+import Input from './Input';
 
-export default class SearchBar extends Component {
-  renderSelect() {
-    const { onSelectedGenreChange, selectedGenre } = this.props;
-    return (
-      <SelectInput
-        id="select-input"
-        name="selectedGenre"
-        onChange={ onSelectedGenreChange }
-        value={ selectedGenre }
-        labelText="Filtrar por gênero"
-      />
-    );
-  }
-
-  render1stInput() {
-    const { onSearchTextChange, searchText } = this.props;
+class SearchBar extends Component {
+  renderInput(id, labelText, value, callback, type = 'text', checked) {
     return (
       <Input
-        type="text"
-        id="text-input"
-        name="searchText"
-        onChange={ onSearchTextChange }
-        value={ searchText }
-        labelText="Inclui o texto"
+        id={id}
+        labelText={labelText}
+        onChange={callback}
+        type={type}
+        value={value}
+        checked={checked}
       />
     );
   }
 
   render() {
-    const { onSearchTextChange, searchText } = this.props;
+    const {
+      searchText, onSearchTextChange, bookmarkedOnly,
+      onBookmarkedChange, selectedGenre, onSelectedGenreChange,
+    } = this.props;
+
     return (
       <form data-testid="search-bar-form">
-        <Input
-          type="text"
-          id="text-input"
-          name="searchText"
-          onChange={ onSearchTextChange }
-          value={ searchText }
-          labelText="Inclui o texto"
+        {this.renderInput('text-input', 'Inclui o texto:', searchText, onSearchTextChange)}
+        {
+          this.renderInput(
+            'checkbox-input', 'Mostrar somente favoritos', '', onBookmarkedChange,
+            'checkbox', bookmarkedOnly,
+          )
+        }
+        <SelectInput
+          id="select-input"
+          labelText="Filtrar por gênero"
+          onChange={onSelectedGenreChange}
+          optionId="select-option"
+          value={selectedGenre}
         />
-        { this.render1stInput() }
-        { this.renderSelect() }
       </form>
     );
   }
@@ -53,6 +48,10 @@ export default class SearchBar extends Component {
 SearchBar.propTypes = {
   searchText: PropTypes.string.isRequired,
   onSearchTextChange: PropTypes.func.isRequired,
+  bookmarkedOnly: PropTypes.bool.isRequired,
+  onBookmarkedChange: PropTypes.func.isRequired,
   selectedGenre: PropTypes.string.isRequired,
   onSelectedGenreChange: PropTypes.func.isRequired,
 };
+
+export default SearchBar;
